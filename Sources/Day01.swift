@@ -18,10 +18,10 @@ struct Day01: AdventDay {
     return (left.sorted(by: <), right.sorted(by: <))
   }
 
-  var appears: [Int: Int] {
-    var appears: [Int: Int] = [:]
+  var appears: [(value: Int, count: Int)] {
+    var appears: [(Int, Int)] = []
     for entity in entities.left {
-      appears[entity, default: 0] = entities.right.count { $0 == entity }
+      appears.append((entity, entities.right.count { $0 == entity }))
     }
     return appears
   }
@@ -37,7 +37,7 @@ struct Day01: AdventDay {
     // entities.map { $0.max() ?? 0 }.reduce(0, +)
     var sum = 0
     for entity in appears {
-      sum += entity.key * entity.value
+      sum += entity.value * entity.count
     }
     return sum
   }
