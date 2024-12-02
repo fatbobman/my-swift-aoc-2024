@@ -6,16 +6,6 @@ struct Day01: AdventDay {
 
   // Splits input data into its component parts and convert from string.
   var entities: (left: [Int], right: [Int]) {
-    // var left: [Int] = []
-    // var right: [Int] = []
-    // let parts = data.split(separator: "\n").map {
-    //   $0.split(separator: "   ").compactMap { Int($0) }
-    // }
-    // for part in parts {
-    //   left.append(part[0])
-    //   right.append(part[1])
-    // }
-    // return (left.sorted(by: <), right.sorted(by: <))
     let lines = data.components(separatedBy: .newlines)
     let capacity = lines.count
 
