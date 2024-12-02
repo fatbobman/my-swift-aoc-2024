@@ -6,24 +6,47 @@ struct Day01: AdventDay {
 
   // Splits input data into its component parts and convert from string.
   var entities: (left: [Int], right: [Int]) {
-    var left: [Int] = []
-    var right: [Int] = []
-    let parts = data.split(separator: "\n").map {
-      $0.split(separator: "   ").compactMap { Int($0) }
+    // var left: [Int] = []
+    // var right: [Int] = []
+    // let parts = data.split(separator: "\n").map {
+    //   $0.split(separator: "   ").compactMap { Int($0) }
+    // }
+    // for part in parts {
+    //   left.append(part[0])
+    //   right.append(part[1])
+    // }
+    // return (left.sorted(by: <), right.sorted(by: <))
+    let lines = data.components(separatedBy: .newlines)
+    let capacity = lines.count
+
+    var left = [Int]()
+    var right = [Int]()
+    left.reserveCapacity(capacity)
+    right.reserveCapacity(capacity)
+
+    let pairs = lines.map { line -> (Int, Int) in
+      let numbers = line.split(separator: "   ").compactMap { Int($0) }
+      guard let first = numbers.first, let second = numbers.last else {
+        fatalError("Invalid input")
+      }
+      return (first, second)
     }
-    for part in parts {
-      left.append(part[0])
-      right.append(part[1])
-    }
+    left = pairs.map { $0.0 }
+    right = pairs.map { $0.1 }
     return (left.sorted(by: <), right.sorted(by: <))
   }
 
   var appears: [(value: Int, count: Int)] {
-    var appears: [(Int, Int)] = []
-    for entity in entities.left {
-      appears.append((entity, entities.right.count { $0 == entity }))
+    var countCount = [Int: Int]()
+    return entities.left.map { leftValue in
+      if let count = countCount[leftValue] {
+        return (value: leftValue, count: count)
+      } else {
+        let count = entities.right.count { $0 == leftValue }
+        countCount[leftValue] = count
+        return (value: leftValue, count: count)
+      }
     }
-    return appears
   }
 
   // Replace this with your solution for the first part of the day's challenge.
@@ -33,12 +56,6 @@ struct Day01: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    // Sum the maximum entries in each set of data
-    // entities.map { $0.max() ?? 0 }.reduce(0, +)
-    var sum = 0
-    for entity in appears {
-      sum += entity.value * entity.count
-    }
-    return sum
+    appears.reduce(0) { $0 + $1.value * $1.count }
   }
 }

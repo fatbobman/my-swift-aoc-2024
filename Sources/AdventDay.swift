@@ -30,8 +30,8 @@ extension AdventDay {
   // Find the challenge day from the type name.
   static var day: Int {
     let typeName = String(reflecting: Self.self)
-    guard let i = typeName.lastIndex(where: { !$0.isNumber }),
-      let day = Int(typeName[i...].dropFirst())
+    guard let index = typeName.lastIndex(where: { !$0.isNumber }),
+          let day = Int(typeName[index...].dropFirst())
     else {
       fatalError(
         """
@@ -64,10 +64,11 @@ extension AdventDay {
     let dataURL = Bundle.module.url(
       forResource: dataFilename,
       withExtension: "txt",
-      subdirectory: "Data")
+      subdirectory: "Data"
+    )
 
     guard let dataURL,
-      let data = try? String(contentsOf: dataURL, encoding: .utf8)
+          let data = try? String(contentsOf: dataURL, encoding: .utf8)
     else {
       fatalError("Couldn't find file '\(dataFilename).txt' in the 'Data' directory.")
     }
