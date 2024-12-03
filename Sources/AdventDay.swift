@@ -31,7 +31,7 @@ extension AdventDay {
   static var day: Int {
     let typeName = String(reflecting: Self.self)
     guard let index = typeName.lastIndex(where: { !$0.isNumber }),
-          let day = Int(typeName[index...].dropFirst())
+      let day = Int(typeName[index...].dropFirst())
     else {
       fatalError(
         """
@@ -68,7 +68,7 @@ extension AdventDay {
     )
 
     guard let dataURL,
-          let data = try? String(contentsOf: dataURL, encoding: .utf8)
+      let data = try? String(contentsOf: dataURL, encoding: .utf8)
     else {
       fatalError("Couldn't find file '\(dataFilename).txt' in the 'Data' directory.")
     }

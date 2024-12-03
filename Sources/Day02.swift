@@ -35,12 +35,12 @@ struct Day02: AdventDay {
 
   func part2() -> Any {
     entities.count { line in
-      check(line: line) ||
-      (0...line.count - 1).contains { index in
-         var line = line
-         line.remove(at: index)
-         return check(line: line)
-      }
+      check(line: line)
+        || (0...line.count - 1).contains { index in
+          var line = line
+          line.remove(at: index)
+          return check(line: line)
+        }
     }
   }
 }
