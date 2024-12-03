@@ -13,39 +13,33 @@ struct Day02: AdventDay {
 
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    var count = 0
-    for line in entities {
-      if check(line: line) {
-        count += 1
-      }
+    entities.count { line in
+      check(line: line)
     }
-    return count
-  }
-
-  // Replace this with your solution for the second part of the day's challenge.
-  func part2() -> Any {
-    entities.filter { line in
-      check(line: line) || // 检查原始序列是否安全
-      (0..<line.count).contains { index in // 尝试移除每个位置的数字
-        var newLine = line
-        newLine.remove(at: index)
-        return check(line: newLine)
-      }
-    }.count
   }
 
   func check(line: [Int]) -> Bool {
     guard line.count >= 2 else { return false }
-    let pairs = Array(zip(line, line.dropFirst()))
-    let firstDiff = pairs[0].1 - pairs[0].0
-    let isIncreasing = firstDiff > 0
-    
-    return pairs.allSatisfy { prev, next in
-      let diff = next - prev
-      if isIncreasing {
-        return diff > 0 && diff <= 3
+    let diff = line[1] - line[0]
+    let isForward = diff > 0
+    let pairs = zip(line, line.dropFirst())
+    return pairs.allSatisfy { current, next in
+      let diff = next - current
+      if isForward {
+        return diff > 0 && diff < 4
       } else {
-        return diff < 0 && diff >= -3
+        return diff < 0 && diff > -4
+      }
+    }
+  }
+
+  func part2() -> Any {
+    entities.count { line in
+      check(line: line) ||
+      (0...line.count - 1).contains { index in
+         var line = line
+         line.remove(at: index)
+         return check(line: line)
       }
     }
   }
